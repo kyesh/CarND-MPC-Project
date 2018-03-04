@@ -110,7 +110,7 @@ Eigen::VectorXd ty = Eigen::Map<Eigen::VectorXd, Eigen::Unaligned>(ptsy.data(), 
   double cte = polyeval(coeffs, 0);
   // Due to the sign starting at 0, the orientation error is -f'(x).
   // derivative of coeffs[0] + coeffs[1] * x -> coeffs[1]
-  double epsi = psi - atan(coeffs[1]);
+  double epsi = -atan(coeffs[1]);
 
 	Eigen::VectorXd state(6);
 	state << 0,0,0,v,cte,epsi;

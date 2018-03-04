@@ -1,0 +1,41 @@
+The state variables are
+x position
+y position
+psi (Angle of the vehicle)
+v (velocity)
+cte (cross track error)
+epsi (error between current and desired angle)
+
+Actuator inputs are
+a (throttle values between -1 and 1)
+delta (steering angle values between -25 degrees to 25 degrees)
+
+Update Equations are:
+x[t+1] = x[t] + v[t] * cos(psi[t]) * dt
+y[t+1] = y[t] + v[t] * sin(psi[t]) * dt
+psi_[t+1] = psi[t] + v[t] / Lf * delta[t] * dt
+v_[t+1] = v[t] + a[t] * dt
+cte[t+1] = f(x[t]) - y[t] + v[t] * sin(epsi[t]) * dt
+epsi[t+1] = psi[t] - psides[t] + v[t] * delta[t] / Lf * dt
+
+I chose my dt to be .1 seconds so it would correspond to 100ms. My theory was I could just take the second set of actuations the model predicted at time t+1 and use those at my actuator actions because that's the actions the controller thought the vehicle should be taking 100ms into the future
+
+N was chosen to be 10 becuase I thought 1 second was far enough into the future and I was concernded about the vehicle projecting movements too far into the future and possible over runnning the waypoints provided.
+
+I used the following lines of code to convert from a global point space to a vehicle relative point space
+
+px and py are the position of the vehicle in the global space and psi is the orienation of the vehcle in the global space
+
+for(int i =0; i<ptsx.size();i++){
+	double shift_x = ptsx[i]-px;
+	double shift_y = ptsy[i]-py;
+
+	ptsx[i] = (shift_x*cos(0-psi) - shift_y*sin(0-psi));
+	ptsy[i] = (shift_x*sin(0-psi) + shift_y*cos(0-psi));
+}
+
+My theory for perdicting latency was to select contorl actions 100ms into the future or 1 dt so the vehicle would actuate according to what the ideal actuation would in 100ms.
+
+As seen by the following two lines
+result.push_back(solution.x[delta_start+1]);
+result.push_back(solution.x[a_start+1]);
