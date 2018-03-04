@@ -124,7 +124,7 @@ Eigen::VectorXd ty = Eigen::Map<Eigen::VectorXd, Eigen::Unaligned>(ptsy.data(), 
 	std::cout << controlActions.size() << std::endl;
           double steer_value;
           double throttle_value;
-steer_value = controlActions[0]/deg2rad(25);
+steer_value = -controlActions[0]/deg2rad(25);
 throttle_value = controlActions[1];
 
           json msgJson;
@@ -171,7 +171,7 @@ for(int i = 2; i < controlActions.size(); i = i + 2){
           // NOTE: REMEMBER TO SET THIS TO 100 MILLISECONDS BEFORE
           // SUBMITTING.
 ///////////////////////Put This Back!
-          //this_thread::sleep_for(chrono::milliseconds(100));
+          this_thread::sleep_for(chrono::milliseconds(100));
           ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
         }
       } else {

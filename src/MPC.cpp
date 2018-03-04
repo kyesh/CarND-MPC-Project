@@ -8,7 +8,7 @@ using CppAD::AD;
 // TODO: Set the timestep length and duration
 size_t N = 10;
 double dt = 0.1;
-double ref_v = 50;
+double ref_v = 20;
 int x_start = 0;
 int y_start = x_start + N;
 int psi_start = y_start + N;
@@ -53,8 +53,8 @@ class FG_eval {
 
     // The part of the cost based on the reference state.
     for (int t = 0; t < N; t++) {
-      fg[0] += CppAD::pow(vars[cte_start + t], 2);
-      fg[0] += CppAD::pow(vars[epsi_start + t], 2);
+      fg[0] += 10*CppAD::pow(vars[cte_start + t], 2);
+      fg[0] += 10*CppAD::pow(vars[epsi_start + t], 2);
       fg[0] += CppAD::pow(vars[v_start + t] - ref_v, 2);
     }
 
@@ -263,8 +263,8 @@ for (int i = delta_start; i < a_start; i++) {
 vector<double> result;
 std::cout << solution.x[a_start] << std::endl;
 std::cout << solution.x<< std::endl;
-result.push_back(solution.x[delta_start]);
-result.push_back(solution.x[a_start]);
+result.push_back(solution.x[delta_start+1]);
+result.push_back(solution.x[a_start+1]);
 
 for(int i = 0; i < N; i++){
 	result.push_back(solution.x[x_start + i]);
